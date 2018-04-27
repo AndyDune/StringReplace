@@ -31,5 +31,15 @@ class StringReplaceTest extends TestCase
         $string = 'Gogoriki go #ONE# and #two#';
         $this->assertEquals('Gogoriki go #ONE# and two_ok', $instance->replace($string));
 
+
+        $instance = new SimpleReplace();
+        $instance->setMarkerTemplate('_%s_');
+        $instance->one = 'one_ok';
+        $instance->two = 'two_ok';
+
+        $string = 'Gogoriki go _one_ and _two_';
+        $this->assertEquals('Gogoriki go one_ok and two_ok', $instance->replace($string));
+
+
     }
 }
