@@ -24,7 +24,7 @@ php composer.phar require andydune/string-replace
 Or edit your `composer.json`:
 ```
 "require" : {
-     "andydune/string-replace": "dev-master"
+     "andydune/string-replace": "^1"
 }
 
 ```
