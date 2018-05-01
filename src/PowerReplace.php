@@ -16,11 +16,20 @@ namespace AndyDune\StringReplace;
 
 class PowerReplace
 {
-
     protected $dataToReplace = [];
 
     protected $markerTemplate = '|#([^#]+)#|ui';
 
+    protected $functionsHolder = null;
+
+    public function __construct($functionsHolder = null)
+    {
+        if ($functionsHolder instanceof FunctionsHolder) {
+            $this->functionsHolder = $functionsHolder;
+        } else if ($functionsHolder === null) {
+            $this->functionsHolder = new FunctionsHolder();
+        }
+    }
 
     public function setMarkerTemplate($string)
     {
@@ -47,8 +56,29 @@ class PowerReplace
     public function callbackReplace($key)
     {
         $key = strtolower($key);
+
+        $functionsHolder = $this->functionsHolder;
+        $functions = [];
+        if ($functionsHolder) {
+            do {
+                $fount = preg_match('|([_a-z0-9]+)\(([_a-z0-9]+)\)|ui', $key, $marches);
+                if (!$fount) {
+                    break;
+                }
+                $functions[] = $marches[1];
+                $key = $marches[2];
+            } while (true);
+        }
+
         if (array_key_exists($key, $this->dataToReplace)) {
-            return $this->dataToReplace[$key];
+            $value = $this->dataToReplace[$key];
+            if ($functions) {
+                array_walk($functions, function ($function, $key) use (&$value, $functionsHolder) {
+                    $value = call_user_func([$functionsHolder, $function], $value);
+                });
+            }
+
+            return $value;
         }
         return '';
     }
