@@ -63,21 +63,33 @@ class StringReplaceTest extends TestCase
         $this->assertEquals('Gogoriki go one_ok and two_ok', $instance->replace($string));
 
 
-        $string = 'Gogoriki go #_(ONE)#';
+        $string = 'Gogoriki go #ONE:escape#';
         $instance = new PowerReplace();
         $instance->one = '<b>one_ok</b>';
         $this->assertEquals('Gogoriki go &lt;b&gt;one_ok&lt;/b&gt;', $instance->replace($string));
 
-        $string = 'I know #it##addcomma(and_it)#';
+        $string = 'I know #it##and_it:addcomma#';
         $instance = new PowerReplace();
         $instance->it = 'eat';
         $instance->and_it = 'sleep';
         $this->assertEquals('I know eat, sleep', $instance->replace($string));
 
 
-        $string = 'I know #it##addcomma(and_it)#';
         $instance = new PowerReplace();
         $instance->it = 'eat';
+        $this->assertEquals('I know eat', $instance->replace($string));
+
+
+        $string = 'I know #it##and_it:maxlen():addcomma#';
+        $instance = new PowerReplace();
+        $instance->it = 'eat';
+        $instance->and_it = 'sleep sleep sleep sleep';
+        $this->assertEquals('I know eat, sleep sleep sleep sleep', $instance->replace($string));
+
+        $string = 'I know #it##and_it:maxlen(5):addcomma#';
+        $instance = new PowerReplace();
+        $instance->it = 'eat';
+        $instance->and_it = 'sleep sleep sleep sleep';
         $this->assertEquals('I know eat', $instance->replace($string));
 
     }

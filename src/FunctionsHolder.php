@@ -18,8 +18,9 @@ use Exception;
 class FunctionsHolder
 {
     protected $functions = [
-        '_' => 'htmlSpecialChars',
-        'addcomma' => 'setCommaBefore'
+        'escape' => 'htmlSpecialChars',
+        'addcomma' => 'setCommaBefore',
+        'maxlen' => 'leaveStringWithLength'
     ];
 
     public function __call($name, $arguments)
@@ -37,7 +38,18 @@ class FunctionsHolder
 
     public function setCommaBefore($string)
     {
-        return ', ' . $string;
+        if ($string) {
+            return ', ' . $string;
+        }
+        return '';
+    }
+
+    public function leaveStringWithLength($string, $length = 100)
+    {
+        if (mb_strlen ($string, 'UTF-8') > $length) {
+            return '';
+        }
+        return $string;
     }
 
 }

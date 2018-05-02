@@ -20,6 +20,8 @@ class PowerReplace
 
     protected $markerTemplate = '|#([^#]+)#|ui';
 
+    protected $markerFunctionsSeparator = ':';
+
     protected $functionsHolder = null;
 
     public function __construct($functionsHolder = null)
@@ -46,9 +48,8 @@ class PowerReplace
      */
     public function replace($string)
     {
-        $self = $this;
-        return preg_replace_callback($this->markerTemplate, function ($marches) use ($self) {
-            return $self->callbackReplace($marches[1]);
+        return preg_replace_callback($this->markerTemplate, function ($marches) {
+            return $this->callbackReplace($marches[1]);
         }, $string);
     }
 
@@ -58,29 +59,46 @@ class PowerReplace
         $key = strtolower($key);
 
         $functionsHolder = $this->functionsHolder;
-        $functions = [];
+
         if ($functionsHolder) {
-            do {
-                $fount = preg_match('|([_a-z0-9]+)\(([_a-z0-9]+)\)|ui', $key, $marches);
-                if (!$fount) {
-                    break;
-                }
-                $functions[] = $marches[1];
-                $key = $marches[2];
-            } while (true);
+            $functions = $this->explode($key, $this->markerFunctionsSeparator);
+            $key = array_shift($functions);
+        } else {
+            $functions = false;
         }
 
         if (array_key_exists($key, $this->dataToReplace)) {
             $value = $this->dataToReplace[$key];
             if ($functions) {
                 array_walk($functions, function ($function, $key) use (&$value, $functionsHolder) {
-                    $value = call_user_func([$functionsHolder, $function], $value);
+                    $count = preg_match('|([_a-z0-9]+)\(([,_a-z0-9]*)\)|ui', $function, $marches);
+                    if ($count) {
+                        $function = $marches[1];
+                        $params = $this->explode($marches[2]);
+                    } else {
+                        $params = [];
+                    }
+                    array_unshift($params, $value);
+                    $value = call_user_func_array([$functionsHolder, $function], $params);
                 });
             }
 
             return $value;
         }
         return '';
+    }
+
+    protected function explode($string, $separator = ',')
+    {
+        $result = [];
+        $array = explode($separator, $string);
+        array_walk($array, function ($value) use (&$result) {
+            $value = trim($value);
+            if ($value) {
+                $result[] = $value;
+            }
+        });
+        return $result;
     }
 
     /**
@@ -91,9 +109,8 @@ class PowerReplace
      */
     public function setArray($array)
     {
-        $self = $this;
-        array_walk($array, function ($value, $key) use ($self) {
-            $self->set($key, $value);
+        array_walk($array, function ($value, $key) {
+            $this->set($key, $value);
         });
         return $this;
     }
