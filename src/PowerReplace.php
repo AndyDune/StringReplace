@@ -24,6 +24,13 @@ class PowerReplace
 
     protected $functionsHolder = null;
 
+    /**
+     * PowerReplace constructor.
+     * Set customized function holder.
+     *
+     *
+     * @param null|bool|FunctionsHolder $functionsHolder
+     */
     public function __construct($functionsHolder = null)
     {
         if ($functionsHolder instanceof FunctionsHolder) {
@@ -54,7 +61,7 @@ class PowerReplace
     }
 
 
-    public function callbackReplace($key)
+    protected function callbackReplace($key)
     {
         $key = strtolower($key);
 
