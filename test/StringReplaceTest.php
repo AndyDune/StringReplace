@@ -92,5 +92,23 @@ class StringReplaceTest extends TestCase
         $instance->and_it = 'sleep sleep sleep sleep';
         $this->assertEquals('I know eat', $instance->replace($string));
 
+
+        $string = 'У меня есть #count# #count:pluralrus(яблоко, яблока, яблок)#';
+        $instance = new PowerReplace();
+        $instance->count = 1;
+        $this->assertEquals('У меня есть 1 яблоко', $instance->replace($string));
+        $instance->count = 21;
+        $this->assertEquals('У меня есть 21 яблоко', $instance->replace($string));
+
+        $instance->count = 2;
+        $this->assertEquals('У меня есть 2 яблока', $instance->replace($string));
+        $instance->count = 23;
+        $this->assertEquals('У меня есть 23 яблока', $instance->replace($string));
+
+        $instance->count = 5;
+        $this->assertEquals('У меня есть 5 яблок', $instance->replace($string));
+        $instance->count = 11;
+        $this->assertEquals('У меня есть 11 яблок', $instance->replace($string));
+
     }
 }

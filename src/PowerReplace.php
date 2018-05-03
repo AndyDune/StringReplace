@@ -78,7 +78,7 @@ class PowerReplace
             $value = $this->dataToReplace[$key];
             if ($functions) {
                 array_walk($functions, function ($function, $key) use (&$value, $functionsHolder) {
-                    $count = preg_match('|([_a-z0-9]+)\(([,_a-z0-9]*)\)|ui', $function, $marches);
+                    $count = preg_match('|([_a-z0-9]+)\(([^\)]*)\)|ui', $function, $marches);
                     if ($count) {
                         $function = $marches[1];
                         $params = $this->explode($marches[2]);
