@@ -10,58 +10,52 @@
  * @copyright 2018 Andrey Ryzhov
  */
 
-
-
 namespace AndyDune\StringReplace;
+use AndyDune\StringReplace\Functions\EscapeHtmlSpecialChars;
+use AndyDune\StringReplace\Functions\LeaveStringWithLength;
+use AndyDune\StringReplace\Functions\PluralStringRussian;
+use AndyDune\StringReplace\Functions\SetCommaBefore;
 use Exception;
 
 class FunctionsHolder
 {
     protected $functions = [
-        'escape' => 'htmlSpecialChars',
-        'addcomma' => 'setCommaBefore',
-        'maxlen' => 'leaveStringWithLength',
-        'pluralrus' => 'showPluralStringRussian'
+        'escape' => EscapeHtmlSpecialChars::class,
+        'addcomma' => SetCommaBefore::class,
+        'maxlen' => LeaveStringWithLength::class,
+        'pluralrus' => PluralStringRussian::class
     ];
 
-    public function __call($name, $arguments)
+    public function executeFunction($name, $arguments)
+    {
+        return call_user_func_array($this->getFunctionWithName($name), $arguments);
+    }
+
+    protected function getFunctionWithName($name)
     {
         if (array_key_exists($name, $this->functions)) {
-            return call_user_func_array([$this, $this->functions[$name]], $arguments);
+            $function = $this->functions[$name];
+            if (is_string($function)) {
+                $function = new $function;
+                $this->functions[$name] = $function;
+            }
+            return $function;
         }
         throw new Exception(sprintf('Functions %s does not exist', $name));
     }
 
-    public function htmlSpecialChars($string)
-    {
-        return htmlspecialchars($string);
-    }
 
-    public function setCommaBefore($string)
+    /**
+     * Add custom function.
+     *
+     * @param string $name function statement in template
+     * @param $function callable class name or closure
+     * @return $this
+     */
+    public function addFunction($name , $function)
     {
-        if ($string) {
-            return ', ' . $string;
-        }
-        return '';
-    }
-
-    public function showPluralStringRussian($string, $form1 = '', $form2 = '', $form3 = '')
-    {
-        $n = (int)$string;
-        $n = abs($n) % 100;
-        $n1 = $n % 10;
-        if ($n > 10 && $n < 20) return $form3;
-        if ($n1 > 1 && $n1 < 5) return $form2;
-        if ($n1 == 1) return $form1;
-        return $form3;
-    }
-
-    public function leaveStringWithLength($string, $length = 100)
-    {
-        if (mb_strlen ($string, 'UTF-8') > $length) {
-            return '';
-        }
-        return $string;
+        $this->functions[strtolower($name)] = $function;
+        return $this;
     }
 
 }

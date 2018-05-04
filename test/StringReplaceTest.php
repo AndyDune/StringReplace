@@ -13,6 +13,7 @@
 
 namespace AndyDuneTest\StringReplace;
 
+use AndyDune\StringReplace\FunctionsHolder;
 use AndyDune\StringReplace\PowerReplace;
 use AndyDune\StringReplace\SimpleReplace;
 use PHPUnit\Framework\TestCase;
@@ -109,6 +110,20 @@ class StringReplaceTest extends TestCase
         $this->assertEquals('У меня есть 5 яблок', $instance->replace($string));
         $instance->count = 11;
         $this->assertEquals('У меня есть 11 яблок', $instance->replace($string));
+
+    }
+
+    public function testPowerAddCustomFunction()
+    {
+        $string = 'Where is #word:leftAndRight(_)#?';
+
+        $functionHolder = new FunctionsHolder();
+        $functionHolder->addFunction('leftAndRight', function ($string, $symbol = '') {
+            return $symbol . $string . $symbol;
+        });
+        $instance = new PowerReplace($functionHolder);
+        $instance->word = 'center';
+        $this->assertEquals('Where is _center_?', $instance->replace($string));
 
     }
 }

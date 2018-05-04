@@ -40,6 +40,15 @@ class PowerReplace
         }
     }
 
+    /**
+     * Set marker search template.
+     * Example:
+     *   #([^#]+)#
+     *   %([^%]+)%
+     *
+     * @param $string template for regular between statements '|' and '|ui'
+     * @return $this
+     */
     public function setMarkerTemplate($string)
     {
         $this->markerTemplate = '|' .$string . '|ui';
@@ -86,7 +95,7 @@ class PowerReplace
                         $params = [];
                     }
                     array_unshift($params, $value);
-                    $value = call_user_func_array([$functionsHolder, $function], $params);
+                    $value = $functionsHolder->executeFunction($function, $params);
                 });
             }
 
