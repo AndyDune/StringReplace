@@ -74,9 +74,9 @@ $instance->replace($string); // equals to 'Gogoriki go one_ok and two_ok'
 
 Functions are described next to marker after `:` (you can change separator). 
 
-Functions can get parameters: `#CODE:maxlen(10)#
+Functions can get parameters: `#CODE:maxlen(10)#`
 
-More then one function : `#CODE:maxlen(10):escape#
+More then one function : `#CODE:maxlen(10):escape#`
 
 ### Escape
 ```php
