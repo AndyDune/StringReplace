@@ -78,7 +78,7 @@ Functions can get parameters: `#CODE:maxlen(10)#`
 
 More then one function : `#CODE:maxlen(10):escape#`
 
-### Escape
+### escape
 
 Apply `htmlspecialchars` with inserted value.
 
@@ -91,7 +91,7 @@ $instance->one = '<b>one_ok</b>';
 $instance->replace($string);  // equals to 'Gogoriki go &lt;b&gt;one_ok&lt;/b&gt;'
 ```
 
-### Addcomma
+### addcomma
 
 It adds comma before inserted value if it is not empty.
 
@@ -109,4 +109,23 @@ $string = 'Gogoriki go #one##two:comma#';
 $instance = new PowerReplace();
 $instance->one = 'swim';
 $instance->replace($string);  // equals to 'Gogoriki go swim
+```
+
+### maxlen
+
+Replace marker with value if string behind this one is less then poined in parameter.
+
+```php
+use AndyDune\StringReplace\PowerReplace;
+
+$string = 'Gogoriki go #one##two:masxlen(5):addcomma#';
+$instance = new PowerReplace();
+
+$instance->one = 'swim';
+$instance->one = 'play';
+$instance->replace($string);  // equals to 'Gogoriki go swim, play'
+
+$instance->one = 'swim';
+$instance->one = 'play games';
+$instance->replace($string);  // equals to 'Gogoriki go swim'
 ```
