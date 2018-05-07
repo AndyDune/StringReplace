@@ -12,6 +12,7 @@
 
 namespace AndyDune\StringReplace;
 use AndyDune\StringReplace\Functions\EscapeHtmlSpecialChars;
+use AndyDune\StringReplace\Functions\FunctionAbstract;
 use AndyDune\StringReplace\Functions\LeaveStringWithLength;
 use AndyDune\StringReplace\Functions\PluralStringRussian;
 use AndyDune\StringReplace\Functions\SetCommaBefore;
@@ -44,6 +45,15 @@ class FunctionsHolder
         throw new Exception(sprintf('Functions %s does not exist', $name));
     }
 
+
+    public function clean()
+    {
+        foreach ($this->functions as $function) {
+            if (is_object($function) and ($function instanceof FunctionAbstract)) {
+                $function->clean();
+            }
+        }
+    }
 
     /**
      * Add custom function.

@@ -76,9 +76,30 @@ class StringReplaceTest extends TestCase
         $this->assertEquals('I know eat, sleep', $instance->replace($string));
 
 
+        $string = 'I know words: #it:addcomma(1)##and_it:addcomma(1)##and_it_2:addcomma(1)#';
+        $instance = new PowerReplace();
+        $instance->it = 'eat';
+        $instance->and_it = 'sleep';
+        $this->assertEquals('I know words: eat, sleep', $instance->replace($string));
+
+        $instance = new PowerReplace();
+        $instance->and_it_2 = 'drink';
+        $instance->and_it = 'sleep';
+        $this->assertEquals('I know words: sleep, drink', $instance->replace($string));
+
+
+        $string = 'I know #it##and_it:addcomma#';
         $instance = new PowerReplace();
         $instance->it = 'eat';
         $this->assertEquals('I know eat', $instance->replace($string));
+
+
+        $string = 'I know words: #it:addcomma(1)##and_it:addcomma(1)# and #and_it_2:addcomma(1, 1)#';
+        $instance = new PowerReplace();
+        $instance->it = 'eat';
+        $instance->and_it_2 = 'sleep';
+        $this->assertEquals('I know words: eat and sleep', $instance->replace($string));
+
 
 
         $string = 'I know #it##and_it:maxlen():addcomma#';

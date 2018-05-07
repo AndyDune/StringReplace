@@ -13,14 +13,28 @@
 namespace AndyDune\StringReplace\Functions;
 
 
-class SetCommaBefore
+class SetCommaBefore extends FunctionAbstract
 {
-    public function __invoke($string)
+    protected $count = 0;
+
+    public function __invoke($string, $notForFirst = false, $clean = false)
     {
+        if ($clean) {
+            $this->clean();
+        }
         if ($string) {
+            $this->count++;
+            if ($notForFirst and $this->count == 1) {
+                return $string;
+            }
             return ', ' . $string;
         }
         return '';
+    }
+
+    public function clean()
+    {
+        $this->count = 0;
     }
 
 }
