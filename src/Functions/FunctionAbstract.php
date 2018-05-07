@@ -17,7 +17,7 @@ abstract class FunctionAbstract
 {
     abstract public function __invoke($string);
 
-    public function clean()
+    public function clear()
     {
 
     }

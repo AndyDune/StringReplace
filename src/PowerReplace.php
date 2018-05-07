@@ -64,7 +64,7 @@ class PowerReplace
      */
     public function replace($string)
     {
-        $this->functionsHolder->clean();
+        $this->functionsHolder->clear();
         return preg_replace_callback($this->markerTemplate, function ($marches) {
             return $this->callbackReplace($marches[1]);
         }, $string);

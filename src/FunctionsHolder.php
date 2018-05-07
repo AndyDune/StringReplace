@@ -46,11 +46,11 @@ class FunctionsHolder
     }
 
 
-    public function clean()
+    public function clear()
     {
         foreach ($this->functions as $function) {
             if (is_object($function) and ($function instanceof FunctionAbstract)) {
-                $function->clean();
+                $function->clear();
             }
         }
     }

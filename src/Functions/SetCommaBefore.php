@@ -20,7 +20,7 @@ class SetCommaBefore extends FunctionAbstract
     public function __invoke($string, $notForFirst = false, $clean = false)
     {
         if ($clean) {
-            $this->clean();
+            $this->clear();
         }
         if ($string) {
             $this->count++;
@@ -32,7 +32,7 @@ class SetCommaBefore extends FunctionAbstract
         return '';
     }
 
-    public function clean()
+    public function clear()
     {
         $this->count = 0;
     }
