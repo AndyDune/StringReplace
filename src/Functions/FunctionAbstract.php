@@ -17,6 +17,10 @@ abstract class FunctionAbstract
 {
     abstract public function __invoke($string);
 
+    /**
+     * Functions can accumulate some values for single string for handle.
+     * Useful for clear values in function objects.
+     */
     public function clear()
     {
 

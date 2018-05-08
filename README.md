@@ -111,6 +111,23 @@ $instance->one = 'swim';
 $instance->replace($string);  // equals to 'Gogoriki go swim
 ```
 
+`comma` function may get params: `comma(param1, param2)`
+
+- *param1* set to `1` if you want to miss first comma appearance in string
+- *param2* set to `1` if you want to begin new group of words for next missing  of first comma appearance in string
+
+```php
+$string = 'I know words: #it:addcomma(1)##and_it:addcomma(1)# and #and_it_2:addcomma(1, 1)#';
+$instance = new PowerReplace();
+$instance->setArray( 
+    'it' => 'eat',
+    'and_it' = 'play',
+    'and_it_2' = 'sleep'
+    );
+$instance->replace($string);  // equals to 'I know words: eat, play and sleep'
+
+```
+
 ### maxlen
 
 Replace marker with value if string behind this one is less then poined in parameter.

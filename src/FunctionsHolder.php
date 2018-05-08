@@ -46,6 +46,9 @@ class FunctionsHolder
     }
 
 
+    /**
+     * Clear accumulated values for all created function instances.
+     */
     public function clear()
     {
         foreach ($this->functions as $function) {
