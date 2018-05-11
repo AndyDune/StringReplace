@@ -132,6 +132,18 @@ class StringReplaceTest extends TestCase
         $instance->count = 11;
         $this->assertEquals('У меня есть 11 яблок', $instance->replace($string));
 
+
+        // Can use " or ' with saving white spaces inside
+        $string = 'У меня есть #count##count:pluralrus(" яблоко ", " яблока ", " яблок ")#';
+        $instance = new PowerReplace();
+        $instance->count = 1;
+        $this->assertEquals('У меня есть 1 яблоко ', $instance->replace($string));
+
+        $string = 'У меня есть #count##count:pluralrus(\' яблоко \', \' яблока \', \' яблок \')#';
+        $instance = new PowerReplace();
+        $instance->count = 21;
+        $this->assertEquals('У меня есть 21 яблоко ', $instance->replace($string));
+
     }
 
     public function testPowerAddCustomFunction()
