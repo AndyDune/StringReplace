@@ -50,7 +50,7 @@ $instance->replace($string); // equals to 'Gogoriki go one_ok and two_ok'
 
 ```
 
-It is very simple and quick. Nj any logick and it will no replace statement if no data to replace.
+It is very simple and quick. The is no any logic in it and it will no replace statement if no data to replace.
 
 ## PowerReplace
 
