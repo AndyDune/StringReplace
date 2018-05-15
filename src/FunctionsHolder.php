@@ -16,6 +16,8 @@ use AndyDune\StringReplace\Functions\FunctionAbstract;
 use AndyDune\StringReplace\Functions\LeaveStringWithLength;
 use AndyDune\StringReplace\Functions\PluralStringRussian;
 use AndyDune\StringReplace\Functions\SetCommaBefore;
+use AndyDune\StringReplace\Functions\PluralStringEnglish;
+use AndyDune\StringReplace\Functions\PrintFormatted;
 use Exception;
 
 class FunctionsHolder
@@ -24,7 +26,9 @@ class FunctionsHolder
         'escape' => EscapeHtmlSpecialChars::class,
         'addcomma' => SetCommaBefore::class,
         'maxlen' => LeaveStringWithLength::class,
-        'pluralrus' => PluralStringRussian::class
+        'pluralrus' => PluralStringRussian::class,
+        'plural' => PluralStringEnglish::class,
+        'printf' => PrintFormatted ::class
     ];
 
     public function executeFunction($name, $arguments)

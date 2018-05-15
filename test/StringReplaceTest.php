@@ -144,6 +144,27 @@ class StringReplaceTest extends TestCase
         $instance->count = 21;
         $this->assertEquals('У меня есть 21 яблоко ', $instance->replace($string));
 
+        $string = 'У меня есть #count# #count:pluralrus(\'" яблоко "\', \'" яблока "\', \'" яблок "\')#';
+        $instance = new PowerReplace();
+        $instance->count = 21;
+        $this->assertEquals('У меня есть 21 " яблоко "', $instance->replace($string));
+
+
+        $string = 'I see #count# #count:plural(man, men)#';
+        $instance = new PowerReplace();
+        $instance->count = 1;
+        $this->assertEquals('I see 1 man', $instance->replace($string));
+        $instance->count = 21;
+        $this->assertEquals('I see 21 men', $instance->replace($string));
+
+
+        $string = 'I know words: #it:printf(«%s»):addcomma(1)##and_it:printf(«%s»):addcomma(1)# and #and_it_2:printf(«%s»):addcomma(1, 1)#';
+        $instance = new PowerReplace();
+        $instance->it = 'eat';
+        $instance->and_it_2 = 'sleep';
+        $this->assertEquals('I know words: «eat» and «sleep»', $instance->replace($string));
+
+
     }
 
     public function testPowerAddCustomFunction()

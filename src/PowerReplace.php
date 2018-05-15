@@ -111,7 +111,12 @@ class PowerReplace
         $array = explode($separator, $string);
         array_walk($array, function ($value) use (&$result) {
             $value = trim($value);
-            $value = trim($value, '\'"');
+            if (substr($value, 0, 1) == '"') {
+                $value = trim($value, '"');
+            } else {
+                $value = trim($value, '\'');
+            }
+
             if ($value) {
                 $result[] = $value;
             }
