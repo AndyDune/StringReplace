@@ -146,3 +146,18 @@ $instance->one = 'swim';
 $instance->one = 'play games';
 $instance->replace($string);  // equals to 'Gogoriki go swim'
 ```
+
+### printf
+
+Print formatted string if it is not empty.
+
+```php
+
+$string = 'I know words: #it:printf(«%s»):addcomma(1)##and_it:printf(«%s»):addcomma(1)# and #and_it_2:printf(«%s»):addcomma(1, 1)#';
+$instance = new PowerReplace();
+$instance->it = 'eat';
+$instance->and_it_2 = 'sleep';
+$instance->replace($string); // equals to  I know words: «eat» and «sleep»
+
+
+```
