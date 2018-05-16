@@ -158,6 +158,26 @@ $instance = new PowerReplace();
 $instance->it = 'eat';
 $instance->and_it_2 = 'sleep';
 $instance->replace($string); // equals to  I know words: «eat» and «sleep»
+```
 
+## Custom Functions
+
+Yup can add own function with replace rules. Markers and function are nor case sensitive.
+
+```php
+
+$string = 'Where is #word:leftAndRight(_)#?';
+// or the same
+$string = 'Where is #WORD:LEFTANDRIGHT(_)#?';
+
+$functionHolder = new FunctionsHolder();
+
+// add custom function with name leftAndRight
+$functionHolder->addFunction('leftAndRight', function ($string, $symbol = '') {
+    return $symbol . $string . $symbol;
+});
+$instance = new PowerReplace($functionHolder);
+$instance->word = 'center';
+$instance->replace($string); // Where is _center_?
 
 ```
