@@ -15,6 +15,7 @@ use AndyDune\StringReplace\Functions\EscapeHtmlSpecialChars;
 use AndyDune\StringReplace\Functions\FunctionAbstract;
 use AndyDune\StringReplace\Functions\LeaveStringWithLength;
 use AndyDune\StringReplace\Functions\PluralStringRussian;
+use AndyDune\StringReplace\Functions\Prefix;
 use AndyDune\StringReplace\Functions\SetCommaBefore;
 use AndyDune\StringReplace\Functions\PluralStringEnglish;
 use AndyDune\StringReplace\Functions\PrintFormatted;
@@ -24,6 +25,7 @@ class FunctionsHolder
 {
     protected $functions = [
         'escape' => EscapeHtmlSpecialChars::class,
+        'prefix' => Prefix::class,
         'addcomma' => SetCommaBefore::class,
         'maxlen' => LeaveStringWithLength::class,
         'pluralrus' => PluralStringRussian::class,
