@@ -179,6 +179,13 @@ class StringReplaceTest extends TestCase
         $instance->apple_count = 2;
         $this->assertEquals('Vegetables I have: apples 2, oranges 1', $instance->replace($string));
 
+        //
+        $string = 'Vegetables I have: #apple_count:prefix("apples: "):addcomma(1)##orange_count:prefix("oranges: "):addcomma(1)#';
+        $instance = new PowerReplace();
+        $instance->orange_count = 1;
+        $instance->apple_count = 2;
+        $this->assertEquals('Vegetables I have: apples: 2, oranges: 1', $instance->replace($string));
+
     }
 
     public function testPowerWrongFunctions()

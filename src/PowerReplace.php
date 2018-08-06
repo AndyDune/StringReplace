@@ -84,7 +84,8 @@ class PowerReplace
         $functionsHolder = $this->functionsHolder;
 
         if ($functionsHolder) {
-            $functions = $this->explode($key, $this->markerFunctionsSeparator);
+            //$functions = $this->explode($key, $this->markerFunctionsSeparator);
+            $functions = $this->explodeWithFunctions($key, $this->markerFunctionsSeparator);
             $key = array_shift($functions);
         } else {
             $functions = false;
@@ -196,6 +197,45 @@ class PowerReplace
                 $result[] = $value;
             }
         });
+        return $result;
+    }
+
+    protected function explodeWithFunctions($string, $separator = ':')
+    {
+        if (!strpos($string, $separator)) {
+            return [$string];
+        }
+
+        $result = [];
+        $accumulatedString = '';
+        $value = 0;
+        $openedBracket = 0;
+        $openedQuote = '';
+        $stringArray = str_split($string);
+        foreach ($stringArray as $char) {
+            if (!$openedBracket and $char == $separator) {
+                if ($accumulatedString) {
+                    $result[] = $accumulatedString;
+                    $accumulatedString = '';
+                }
+                continue;
+            }
+
+            if ($char == '(') {
+                $openedBracket++;
+            }
+
+            if ($char == ')') {
+                $openedBracket--;
+            }
+
+            $accumulatedString .= $char;
+        }
+
+        if ($accumulatedString) {
+            $result[] = $accumulatedString;
+        }
+
         return $result;
     }
 
