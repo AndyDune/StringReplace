@@ -21,7 +21,7 @@ use AndyDune\StringReplace\Functions\PluralStringEnglish;
 use AndyDune\StringReplace\Functions\PrintFormatted;
 use Exception;
 
-class FunctionsHolder
+class FunctionsHolder extends FunctionHolderAbstract
 {
     protected $functions = [
         'escape' => EscapeHtmlSpecialChars::class,
@@ -35,7 +35,12 @@ class FunctionsHolder
 
     public function executeFunction($name, $arguments)
     {
-        return call_user_func_array($this->getFunctionWithName($name), $arguments);
+        $function = $this->getFunctionWithName($name);
+        if ($function) {
+            return call_user_func_array($this->getFunctionWithName($name), $arguments);
+        }
+        return $arguments[0];
+        //throw new Exception(sprintf('Functions %s does not exist', $name));
     }
 
     protected function getFunctionWithName($name)
@@ -46,9 +51,15 @@ class FunctionsHolder
                 $function = new $function;
                 $this->functions[$name] = $function;
             }
+
+            if ($this->stringContainer and $function instanceof FunctionAbstract) {
+                $function->setStringContainer($this->stringContainer);
+            }
+
             return $function;
         }
-        throw new Exception(sprintf('Functions %s does not exist', $name));
+        return false;
+        //throw new Exception(sprintf('Functions %s does not exist', $name));
     }
 
 

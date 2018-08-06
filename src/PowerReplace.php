@@ -14,6 +14,8 @@
 namespace AndyDune\StringReplace;
 
 
+use phpDocumentor\Reflection\Types\Self_;
+
 class PowerReplace
 {
     protected $dataToReplace = [];
@@ -38,6 +40,10 @@ class PowerReplace
         } else if ($functionsHolder === null) {
             $this->functionsHolder = new FunctionsHolder();
         }
+
+        if ($this->functionsHolder instanceof FunctionHolderAbstract) {
+            $this->functionsHolder->setStringContainer($this);
+        }
     }
 
     /**
@@ -51,7 +57,7 @@ class PowerReplace
      */
     public function setMarkerTemplate($string)
     {
-        $this->markerTemplate = '|' .$string . '|ui';
+        $this->markerTemplate = '|' . $string . '|ui';
         return $this;
     }
 
@@ -84,8 +90,10 @@ class PowerReplace
             $functions = false;
         }
 
-        if (array_key_exists($key, $this->dataToReplace)) {
-            $value = $this->dataToReplace[$key];
+        $value = $this->getValueFromDataToReplace($key);
+
+        if ($value !== false) {
+            //$value = $this->dataToReplace[$key];
             if ($functions) {
                 array_walk($functions, function ($function, $key) use (&$value, $functionsHolder) {
                     $count = preg_match('|([_a-z0-9]+)\(([^\)]*)\)|ui', $function, $marches);
@@ -103,6 +111,73 @@ class PowerReplace
             return $value;
         }
         return '';
+    }
+
+    protected function getValueFromDataToReplace($key)
+    {
+        if (array_key_exists($key, $this->dataToReplace)) {
+            return $this->dataToReplace[$key];
+        }
+
+        if (!(strpos($key, '[') and strpos($key, ']'))) {
+            return false;
+        }
+
+        $keys = [];
+        $accumulatedString = '';
+        $value = 0;
+        $opened = false;
+        $keyArray = str_split($key);
+        foreach ($keyArray as $char) {
+            if (!in_array($char, ['[', ']'])) {
+                $accumulatedString .= $char;
+                continue;
+            }
+
+            if (in_array($char, ['['])) {
+                if ($opened) {
+                    return false;
+                }
+                $opened = true;
+                if ($accumulatedString) {
+                    $keys[] = $accumulatedString;
+                    $accumulatedString = '';
+                }
+                continue;
+            }
+
+            if (in_array($char, [']'])) {
+                if (!$opened) {
+                    return false;
+                }
+                $opened = false;
+                if ($accumulatedString) {
+                    $keys[] = $accumulatedString;
+                    $accumulatedString = '';
+                } else {
+                    $keys[] = $value;
+                    $value++;
+                }
+                continue;
+            }
+
+            if ($accumulatedString) {
+                $keys[] = $accumulatedString;
+            }
+        }
+
+        if (!$keys) {
+            return false;
+        }
+
+        $data = $this->dataToReplace;
+        foreach ($keys as $key) {
+            if(!is_array($data) or !array_key_exists($key, $data)) {
+                return false;
+            }
+            $data = $data[$key];
+        }
+        return $data;
     }
 
     protected function explode($string, $separator = ',')

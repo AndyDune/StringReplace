@@ -100,8 +100,6 @@ class StringReplaceTest extends TestCase
         $instance->and_it_2 = 'sleep';
         $this->assertEquals('I know words: eat and sleep', $instance->replace($string));
 
-
-
         $string = 'I know #it##and_it:maxlen():addcomma#';
         $instance = new PowerReplace();
         $instance->it = 'eat';
@@ -181,6 +179,42 @@ class StringReplaceTest extends TestCase
         $instance->apple_count = 2;
         $this->assertEquals('Vegetables I have: apples 2, oranges 1', $instance->replace($string));
 
+    }
+
+    public function testPowerWrongFunctions()
+    {
+        $string = 'I know #it:sadasds_sadas#';
+        $instance = new PowerReplace();
+        $instance->it = 'eat';
+        $this->assertEquals('I know eat', $instance->replace($string));
+
+        $string = 'I know #it:sadasds_sadas:prefix("to ")#';
+        $instance = new PowerReplace();
+        $instance->it = 'eat';
+        $this->assertEquals('I know to eat', $instance->replace($string));
+    }
+
+    public function testValueFromArray()
+    {
+        $string = 'I know #her[face]##him[face]#';
+        $instance = new PowerReplace();
+        $instance->setArray(['her' => ['face' => 'nice'], 'him' => 'strong']);
+        $this->assertEquals('I know nice', $instance->replace($string));
+
+        $string = 'I know #her[face]##him[face#';
+        $instance = new PowerReplace();
+        $instance->setArray(['her' => ['face' => 'nice'], 'him' => 'strong']);
+        $this->assertEquals('I know nice', $instance->replace($string));
+
+        $string = 'I know #her[fa_ce]##him[face#';
+        $instance = new PowerReplace();
+        $instance->setArray(['her' => ['face' => 'nice'], 'him' => 'strong']);
+        $this->assertEquals('I know ', $instance->replace($string));
+
+        $string = 'I know #her[face][nose]##her[face][]:addcomma##him[face#';
+        $instance = new PowerReplace();
+        $instance->setArray(['her' => ['face' => ['nose' => 'big', 0 => 'green']], 'him' => 'strong']);
+        $this->assertEquals('I know big, green', $instance->replace($string));
 
     }
 

@@ -1,5 +1,6 @@
 <?php
 /**
+ *
  * PHP version >= 5.6
  *
  * @package andydune/string-replace
@@ -9,13 +10,10 @@
  * @copyright 2018 Andrey Ryzhov
  */
 
+namespace AndyDune\StringReplace;
 
-namespace AndyDune\StringReplace\Functions;
-use AndyDune\StringReplace\PowerReplace;
-
-abstract class FunctionAbstract
+abstract class FunctionHolderAbstract
 {
-
     /**
      * @var PowerReplace
      */
@@ -30,8 +28,7 @@ abstract class FunctionAbstract
     }
 
     /**
-     * @param PowerReplace $stringContainer
-     * @return $this
+     * @param null $stringContainer
      */
     public function setStringContainer(PowerReplace $stringContainer)
     {
@@ -39,15 +36,4 @@ abstract class FunctionAbstract
         return $this;
     }
 
-
-    abstract public function __invoke($string);
-
-    /**
-     * Functions can accumulate some values for single string for handle.
-     * Useful for clear values in function objects.
-     */
-    public function clear()
-    {
-
-    }
 }
