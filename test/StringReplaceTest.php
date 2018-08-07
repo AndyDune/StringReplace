@@ -194,6 +194,33 @@ class StringReplaceTest extends TestCase
         $instance->weight = 80;
         $instance->growth = 180;
         $this->assertEquals('Params: weight: 80kg, growth: 180sm', $instance->replace($string));
+    }
+
+    public function testShowStringIfValueEqualTo()
+    {
+        $string = 'Anton #weight:showIfEqual(80, "has normal weight")##weight:showIfEqual(180, "has obesity")#.';
+        $instance = new PowerReplace();
+        $instance->weight = 80;
+        $this->assertEquals('Anton has normal weight.', $instance->replace($string));
+
+        $instance->weight = 180;
+        $this->assertEquals('Anton has obesity.', $instance->replace($string));
+
+        $string = 'Статус заказа #status:showIfEqual(Y, "получен")##status:showIfEqual(N, "в пути")#.';
+        $instance = new PowerReplace();
+        $instance->status = 'Y';
+        $this->assertEquals('Статус заказа получен.', $instance->replace($string));
+
+        $instance->status = 'N';
+        $this->assertEquals('Статус заказа в пути.', $instance->replace($string));
+
+        $instance->status = 'y';
+        $this->assertEquals('Статус заказа .', $instance->replace($string));
+
+        $string = 'Статус заказа #status:showIfEqual(Y, "получен", "не получен")#.';
+        $instance = new PowerReplace();
+        $instance->status = 'y';
+        $this->assertEquals('Статус заказа не получен.', $instance->replace($string));
 
     }
 

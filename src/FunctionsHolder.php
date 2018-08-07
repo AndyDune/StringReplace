@@ -21,6 +21,7 @@ use AndyDune\StringReplace\Functions\SetCommaBefore;
 use AndyDune\StringReplace\Functions\PluralStringEnglish;
 use AndyDune\StringReplace\Functions\PrintFormatted;
 use AndyDune\StringReplace\Functions\ShowIfOtherValueNotEmpty;
+use AndyDune\StringReplace\Functions\ShowStringIfValueEqualTo;
 use Exception;
 
 class FunctionsHolder extends FunctionHolderAbstract
@@ -34,7 +35,8 @@ class FunctionsHolder extends FunctionHolderAbstract
         'pluralrus' => PluralStringRussian::class,
         'plural' => PluralStringEnglish::class,
         'printf' => PrintFormatted::class,
-        'showifothernotempty' => ShowIfOtherValueNotEmpty::class
+        'showifothernotempty' => ShowIfOtherValueNotEmpty::class,
+        'showifequal' => ShowStringIfValueEqualTo::class
     ];
 
     public function executeFunction($name, $arguments)
@@ -49,6 +51,7 @@ class FunctionsHolder extends FunctionHolderAbstract
 
     protected function getFunctionWithName($name)
     {
+        $name = strtolower($name);
         if (array_key_exists($name, $this->functions)) {
             $function = $this->functions[$name];
             if (is_string($function)) {

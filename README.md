@@ -214,6 +214,21 @@ $instance->replace($string); // Params: weight: 80kg, growth: 180sm
 
 ```
 
+### showIfEqual
+
+It shows string given in second param if first param is equal to value behind the placeholder.
+```php
+$string = 'Anton #weight:showIfEqual(80, "has normal weight")##weight:showIfEqual(180, "has obesity")#.';
+$instance = new PowerReplace();
+$instance->weight = 80;
+$instance->replace($string); // Anton has normal weight.
+
+$string = 'Anton #weight:showIfEqual(80, "has normal weight")##weight:showIfEqual(180, "has obesity")#.';
+$instance = new PowerReplace();
+$instance->weight = 180;
+$instance->replace($string); // Anton has obesity.
+```
+
 
 
 ## Custom Functions

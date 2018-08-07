@@ -79,8 +79,6 @@ class PowerReplace
 
     protected function callbackReplace($key)
     {
-        $key = strtolower($key);
-
         $functionsHolder = $this->functionsHolder;
 
         if ($functionsHolder) {
@@ -90,6 +88,8 @@ class PowerReplace
         } else {
             $functions = false;
         }
+
+        $key = strtolower($key);
 
         $value = $this->getValueFromDataToReplace($key);
 
