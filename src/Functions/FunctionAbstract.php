@@ -22,7 +22,7 @@ abstract class FunctionAbstract
     protected $stringContainer = null;
 
     /**
-     * @return null
+     * @return PowerReplace
      */
     public function getStringContainer()
     {

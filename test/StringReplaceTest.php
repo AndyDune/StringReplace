@@ -185,6 +185,15 @@ class StringReplaceTest extends TestCase
         $instance->orange_count = 1;
         $instance->apple_count = 2;
         $this->assertEquals('Vegetables I have: apples: 2, oranges: 1', $instance->replace($string));
+    }
+
+    public function testPostfix()
+    {
+        $string = 'Params: #weight:prefix("weight: "):postfix(kg)##growth:prefix("growth: "):postfix(sm):addcomma#';
+        $instance = new PowerReplace();
+        $instance->weight = 80;
+        $instance->growth = 180;
+        $this->assertEquals('Params: weight: 80kg, growth: 180sm', $instance->replace($string));
 
     }
 
@@ -222,6 +231,23 @@ class StringReplaceTest extends TestCase
         $instance = new PowerReplace();
         $instance->setArray(['her' => ['face' => ['nose' => 'big', 0 => 'green']], 'him' => 'strong']);
         $this->assertEquals('I know big, green', $instance->replace($string));
+
+
+        $string = 'Variants #type[name]:showIfOtherNotEmpty(type[value])##type[value]:prefix(": ")#';
+        $instance = new PowerReplace();
+        $instance->setArray(['type'=> ['name' => 'color', 'value' => 'green']]);
+        $this->assertEquals('Variants color: green', $instance->replace($string));
+
+        $string = 'Variants #type[name]:showIfOtherNotEmpty(type[value])##type[value]:prefix(": ")##type2[name]:showIfOtherNotEmpty(type2[value]):addcomma##type2[value]:prefix(": ")#';
+        $instance = new PowerReplace();
+        $instance->setArray(['type'=> ['name' => 'color', 'value' => 'green']]);
+        $this->assertEquals('Variants color: green', $instance->replace($string));
+
+        $instance = new PowerReplace();
+        $instance->setArray(['type'=> ['name' => 'color', 'value' => 'green'],
+            'type2'=> ['name' => 'size', 'value' => '4X4']
+            ]);
+        $this->assertEquals('Variants color: green, size: 4X4', $instance->replace($string));
 
     }
 

@@ -192,6 +192,29 @@ $instance->count = 5;
 $instance->replace($string); // У меня есть 5 яблок
 ```
 
+### prefix
+
+It shows given string as prefix only if value behind the key is not empty.
+```php
+$string = 'Vegetables I have: #apple_count:prefix("apples "):addcomma(1)##orange_count:prefix("oranges "):addcomma(1)#';
+$instance = new PowerReplace();
+$instance->apple_count = 1;
+$instance->replace($string); // Vegetables I have: apples 1
+```
+
+### postfix
+
+It shows given string as postfix only if value behind the key is not empty.
+```php
+$string = 'Params: #weight:prefix("weight: "):postfix(kg)##growth:prefix("growth: "):postfix(sm):addcomma#';
+$instance = new PowerReplace();
+$instance->weight = 80;
+$instance->growth = 180;
+$instance->replace($string); // Params: weight: 80kg, growth: 180sm
+
+```
+
+
 
 ## Custom Functions
 

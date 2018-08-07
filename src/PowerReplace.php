@@ -114,7 +114,7 @@ class PowerReplace
         return '';
     }
 
-    protected function getValueFromDataToReplace($key)
+    public function getValueFromDataToReplace($key)
     {
         if (array_key_exists($key, $this->dataToReplace)) {
             return $this->dataToReplace[$key];

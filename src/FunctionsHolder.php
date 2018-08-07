@@ -15,10 +15,12 @@ use AndyDune\StringReplace\Functions\EscapeHtmlSpecialChars;
 use AndyDune\StringReplace\Functions\FunctionAbstract;
 use AndyDune\StringReplace\Functions\LeaveStringWithLength;
 use AndyDune\StringReplace\Functions\PluralStringRussian;
+use AndyDune\StringReplace\Functions\Postfix;
 use AndyDune\StringReplace\Functions\Prefix;
 use AndyDune\StringReplace\Functions\SetCommaBefore;
 use AndyDune\StringReplace\Functions\PluralStringEnglish;
 use AndyDune\StringReplace\Functions\PrintFormatted;
+use AndyDune\StringReplace\Functions\ShowIfOtherValueNotEmpty;
 use Exception;
 
 class FunctionsHolder extends FunctionHolderAbstract
@@ -26,11 +28,13 @@ class FunctionsHolder extends FunctionHolderAbstract
     protected $functions = [
         'escape' => EscapeHtmlSpecialChars::class,
         'prefix' => Prefix::class,
+        'postfix' => Postfix::class,
         'addcomma' => SetCommaBefore::class,
         'maxlen' => LeaveStringWithLength::class,
         'pluralrus' => PluralStringRussian::class,
         'plural' => PluralStringEnglish::class,
-        'printf' => PrintFormatted ::class
+        'printf' => PrintFormatted::class,
+        'showifothernotempty' => ShowIfOtherValueNotEmpty::class
     ];
 
     public function executeFunction($name, $arguments)
