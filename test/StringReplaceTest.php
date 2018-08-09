@@ -196,6 +196,24 @@ class StringReplaceTest extends TestCase
         $this->assertEquals('Params: weight: 80kg, growth: 180sm', $instance->replace($string));
     }
 
+    public function testBrackets()
+    {
+        $string = 'Params: #weight:prefix(":"):postfix(":")#';
+        $instance = new PowerReplace();
+        $instance->weight = 80;
+        $instance->growth = 180;
+        $this->assertEquals('Params: :80:', $instance->replace($string));
+
+        /*
+        $string = 'Params: #weight:prefix("("):postfix(")")#';
+        $instance = new PowerReplace();
+        $instance->weight = 80;
+        $instance->growth = 180;
+        $this->assertEquals('Params: (80)', $instance->replace($string));
+        */
+    }
+
+
     public function testShowStringIfValueEqualTo()
     {
         $string = 'Anton #weight:showIfEqual(80, "has normal weight")##weight:showIfEqual(180, "has obesity")#.';

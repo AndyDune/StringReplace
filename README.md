@@ -230,6 +230,16 @@ $instance->replace($string); // Anton has obesity.
 ```
 
 
+### showIfOtherValueNotEmpty
+
+It shows string a value behind the current placeholder if another is not empty.
+
+```php
+$string = 'Variants #type[name]:showIfOtherNotEmpty(type[value])##type[value]:prefix(": ")#';
+$instance = new PowerReplace();
+$instance->setArray(['type'=> ['name' => 'color', 'value' => 'green']]);
+$instance->replace($string); // Variants color: green
+```
 
 ## Custom Functions
 
