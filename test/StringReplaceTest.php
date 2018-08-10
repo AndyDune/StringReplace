@@ -204,13 +204,32 @@ class StringReplaceTest extends TestCase
         $instance->growth = 180;
         $this->assertEquals('Params: :80:', $instance->replace($string));
 
-        /*
+        $string = 'Params: #weight:prefix(\':\'):postfix(":")#';
+        $instance = new PowerReplace();
+        $instance->weight = 80;
+        $instance->growth = 180;
+        $this->assertEquals('Params: :80:', $instance->replace($string));
+
+
         $string = 'Params: #weight:prefix("("):postfix(")")#';
         $instance = new PowerReplace();
         $instance->weight = 80;
         $instance->growth = 180;
         $this->assertEquals('Params: (80)', $instance->replace($string));
-        */
+
+
+        $string = "Params: #weight:prefix('('):postfix(')')#";
+        $instance = new PowerReplace();
+        $instance->weight = 80;
+        $instance->growth = 180;
+        $this->assertEquals('Params: (80)', $instance->replace($string));
+
+        $string = "Params: #weight:prefix(\"(\"):postfix(')')#";
+        $instance = new PowerReplace();
+        $instance->weight = 80;
+        $instance->growth = 180;
+        $this->assertEquals('Params: (80)', $instance->replace($string));
+
     }
 
 
@@ -253,6 +272,23 @@ class StringReplaceTest extends TestCase
         $instance = new PowerReplace();
         $instance->it = 'eat';
         $this->assertEquals('I know to eat', $instance->replace($string));
+
+
+        // It has not mixed qoutes
+        $string = 'Params: #weight:prefix("(\'):postfix(")")#';
+        $instance = new PowerReplace();
+        $instance->weight = 80;
+        $instance->growth = 180;
+        $this->assertEquals('Params: (\'):postfix(")80', $instance->replace($string));
+
+
+        // It has not qoutes to protect
+        $string = 'Params: #weight:prefix(():postfix(")")#';
+        $instance = new PowerReplace();
+        $instance->weight = 80;
+        $instance->growth = 180;
+        $this->assertEquals('Params: ():postfix(")"80', $instance->replace($string));
+
     }
 
     public function testValueFromArray()

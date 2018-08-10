@@ -97,6 +97,17 @@ class PowerReplace
             //$value = $this->dataToReplace[$key];
             if ($functions) {
                 array_walk($functions, function ($function, $key) use (&$value, $functionsHolder) {
+                    $data = $this->findFunctionParams($function);
+                    $function = $data['function'];
+                    $params = $data['params'];
+
+                    if ($params) {
+                        $params = $this->explode($params);
+                    } else {
+                        $params = [];
+                    }
+
+                    /*
                     $count = preg_match('|([_a-z0-9]+)\(([^\)]*)\)|ui', $function, $marches);
                     if ($count) {
                         $function = $marches[1];
@@ -104,6 +115,8 @@ class PowerReplace
                     } else {
                         $params = [];
                     }
+                    */
+
                     array_unshift($params, $value);
                     $value = $functionsHolder->executeFunction($function, $params);
                 });
@@ -112,6 +125,26 @@ class PowerReplace
             return $value;
         }
         return '';
+    }
+
+
+    protected function findFunctionParams($functionAsString)
+    {
+        $functionAsString = trim($functionAsString);
+        $result = [
+            'function' => $functionAsString,
+            'params' => ''
+        ];
+        $partsOpenBracket = explode('(', $functionAsString);
+
+        if (count($partsOpenBracket) == 1) {
+            return $result;
+        }
+
+        $result['function'] = trim(array_shift($partsOpenBracket));
+        $result['params'] = rtrim(implode('(', $partsOpenBracket), ')');
+
+        return $result;
     }
 
     public function getValueFromDataToReplace($key)
@@ -128,7 +161,8 @@ class PowerReplace
         $accumulatedString = '';
         $value = 0;
         $opened = false;
-        $keyArray = str_split($key);
+        //$keyArray = str_split($key);
+        $keyArray = $this->utf8Split($key);
         foreach ($keyArray as $char) {
             if (!in_array($char, ['[', ']'])) {
                 $accumulatedString .= $char;
@@ -210,9 +244,26 @@ class PowerReplace
         $accumulatedString = '';
         $value = 0;
         $openedBracket = 0;
-        $openedQuote = '';
-        $stringArray = str_split($string);
+        $openedQuote = false;
+        $openedSingleQuote = false;
+        //$stringArray = str_split($string);
+        $stringArray = $this->utf8Split($string);
         foreach ($stringArray as $char) {
+
+            if ($char == '"') {
+                if (!$openedSingleQuote) {
+                    $openedQuote = !$openedQuote;
+                }
+            }
+
+            if ($char == "'") {
+                if (!$openedQuote) {
+                    $openedSingleQuote = !$openedSingleQuote;
+                }
+            }
+
+            $closedAllQuote = !($openedSingleQuote or $openedQuote);
+
             if (!$openedBracket and $char == $separator) {
                 if ($accumulatedString) {
                     $result[] = $accumulatedString;
@@ -221,11 +272,11 @@ class PowerReplace
                 continue;
             }
 
-            if ($char == '(') {
+            if ($closedAllQuote and $char == '(') {
                 $openedBracket++;
             }
 
-            if ($char == ')') {
+            if ($closedAllQuote and $char == ')') {
                 $openedBracket--;
             }
 
@@ -268,6 +319,17 @@ class PowerReplace
         $name = strtolower($name);
         $this->dataToReplace[$name] = $value;
         return $this;
+    }
+
+
+    function utf8Split($str, $len = 1)
+    {
+        $arr = array();
+        $strLen = mb_strlen($str, 'UTF-8');
+        for ($i = 0; $i < $strLen; $i++) {
+            $arr[] = mb_substr($str, $i, $len, 'UTF-8');
+        }
+        return $arr;
     }
 
 }
