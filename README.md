@@ -76,6 +76,15 @@ Functions are described next to marker after `:` (you can change separator).
 
 Functions can get parameters: `#CODE:maxlen(10)#`
 
+Functions may receive params inside quotes (or single quotes). There are colon or brackets as part of params.
+
+```php
+$string = "Params: #weight:prefix(\"(\"):postfix(')')#";
+$instance = new PowerReplace();
+$instance->weight = 80;
+$instance->replace($string); // Params: (80)
+```
+
 More then one function : `#CODE:maxlen(10):escape#`
 
 ### escape
