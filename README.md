@@ -74,15 +74,18 @@ $instance->replace($string); // equals to 'Gogoriki go one_ok and two_ok'
 
 Functions are described next to marker after `:` (you can change separator). 
 
-Functions can get parameters: `#CODE:maxlen(10)#`
+Functions can get parameters: `#CODE:maxlen(10)#` or `#CODE:maxlen("10")#` 
 
-Functions may receive params inside quotes (or single quotes). There are colon or brackets as part of params.
+Symbols: __:__ __(__ __)__ __,__ __"__ __'__ are reserved to use as parameters for function. 
+So if you want to use it you mast encase it with quotes (or single quotes).
 
+
+This is correct usage:
 ```php
+$string = "Params: #weight:prefix(\"'\"):postfix('"')#";
+$string = "Params: #weight:prefix(\":\"):postfix(':')#";
 $string = "Params: #weight:prefix(\"(\"):postfix(')')#";
-$instance = new PowerReplace();
-$instance->weight = 80;
-$instance->replace($string); // Params: (80)
+$string = "Params: #weight:prefix(\", \"):postfix(', ')#";
 ```
 
 More then one function : `#CODE:maxlen(10):escape#`
