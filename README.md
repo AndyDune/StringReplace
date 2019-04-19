@@ -21,7 +21,7 @@ Installation using composer:
 ```
 composer require andydune/string-replace
 ```
-Or if composer didn't install globally:
+Or if composer was not installed globally:
 ```
 php composer.phar require andydune/string-replace
 ```
