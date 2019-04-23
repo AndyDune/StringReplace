@@ -278,3 +278,6 @@ $instance->word = 'center';
 $instance->replace($string); // Where is _center_?
 
 ```
+## Application
+
+- [HtmlTable](https://github.com/AndyDune/HtmlTable/blob/master/src/Builder.php)
