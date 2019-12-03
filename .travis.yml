@@ -2,7 +2,6 @@ language: php
 php:
   - '7.2'
   - '7.3'
-  - '7.4'
 
 install:
   - travis_retry composer install $COMPOSER_ARGS --ignore-platform-reqs

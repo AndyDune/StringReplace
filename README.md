@@ -11,7 +11,7 @@ Replace in given string meta data with real data.
 Requirements
 ------------
 
-PHP version >= 5.6
+PHP version >= 7.2
 
 Installation
 ------------
