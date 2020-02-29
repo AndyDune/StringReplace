@@ -248,7 +248,7 @@ $instance->replace($string); // Anton has obesity.
 
 ### showIfOtherValueNotEmpty
 
-It shows string a value behind the current placeholder if another is not empty.
+It shows string value behind the current placeholder if another is not empty.
 
 ```php
 $string = 'Variants #type[name]:showIfOtherNotEmpty(type[value])##type[value]:prefix(": ")#';
@@ -259,7 +259,7 @@ $instance->replace($string); // Variants color: green
 
 ## Custom Functions
 
-Yup can add own function with replace rules. Markers and function are nor case sensitive.
+Yup can add your own functions with replace rules. Markers and functions are not case sensitive.
 
 ```php
 
