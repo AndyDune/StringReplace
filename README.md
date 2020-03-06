@@ -54,7 +54,7 @@ $instance->replace($string); // equals to 'Gogoriki go one_ok and two_ok'
 
 ```
 
-It is very simple and quick. The is no any logic in it and it will no replace statement if no data to replace.
+There is no any logic in it and it will no replace statements if no data to replace.
 
 ## PowerReplace
 
@@ -135,11 +135,11 @@ $instance->replace($string);  // equals to 'Gogoriki go swim
 ```php
 $string = 'I know words: #it:addcomma(1)##and_it:addcomma(1)# and #and_it_2:addcomma(1, 1)#';
 $instance = new PowerReplace();
-$instance->setArray( 
+$instance->setArray([ 
     'it' => 'eat',
     'and_it' = 'play',
     'and_it_2' = 'sleep'
-    );
+    ]);
 $instance->replace($string);  // equals to 'I know words: eat, play and sleep'
 
 ```
@@ -259,7 +259,7 @@ $instance->replace($string); // Variants color: green
 
 ## Custom Functions
 
-Yup can add your own functions with replace rules. Markers and functions are not case sensitive.
+You can add your own functions with replace rules. Markers and functions are not case sensitive.
 
 ```php
 
