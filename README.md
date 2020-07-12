@@ -6,7 +6,7 @@
 [![Total Downloads](https://img.shields.io/packagist/dt/andydune/string-replace.svg?style=flat-square)](https://packagist.org/packages/andydune/string-replace)
 
 
-Replace in given string meta data with real data.
+It replace in given string meta data with real data.
 
 Requirements
 ------------
@@ -40,7 +40,7 @@ php composer.phar update
 
 ## SimpleReplace
 
-It's very simple and lightweight replace. It uses `str_replace` function.
+It's very simple and lightweight replace methods. It uses `str_replace` function.
 
 ```php
 use AndyDune\StringReplace\SimpleReplace;
